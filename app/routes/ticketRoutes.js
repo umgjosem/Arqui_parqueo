@@ -7,6 +7,80 @@ const router = express.Router();
 // Cargamos el controller de ticket.
 const ticketController = require("../controllers/ticketController");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Tickets
+ *   description: Registro de entradas y salidas del parqueo
+ */
+
+/**
+ * @swagger
+ * /tickets:
+ *   get:
+ *     summary: Obtiene todos los tickets registrados
+ *     tags: [Tickets]
+ *     responses:
+ *       200:
+ *         description: Lista de tickets
+ */
+
+/**
+ * @swagger
+ * /tickets/entrada:
+ *   post:
+ *     summary: Registra la entrada de un vehículo
+ *     tags: [Tickets]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_cliente:
+ *                 type: integer
+ *               id_espacio:
+ *                 type: integer
+ *     responses:
+ *       201:
+ *         description: Entrada registrada exitosamente
+ */
+
+/**
+ * @swagger
+ * /tickets/{id}/salida:
+ *   put:
+ *     summary: Registra la salida de un vehículo y calcula el cobro
+ *     tags: [Tickets]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Salida registrada y ticket actualizado
+ */
+
+/**
+ * @swagger
+ * /tickets/{id}:
+ *   get:
+ *     summary: Obtiene un ticket por ID
+ *     tags: [Tickets]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Ticket encontrado
+ *       404:
+ *         description: Ticket no encontrado
+ */
+
+
+
 // Ruta GET /api/tickets para obtener todos los tickets (activos por defecto).
 // Opcional: ?estado=Finalizado para filtrar (pasa a req.query.estado).
 router.get("/", ticketController.getAll);

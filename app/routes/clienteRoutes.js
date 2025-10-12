@@ -7,6 +7,120 @@ const router = express.Router();
 // Cargamos el controller de cliente para enlazar las rutas con sus métodos.
 const clienteController = require("../controllers/clienteController");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Clientes
+ *   description: Operaciones CRUD de clientes
+ */
+
+/**
+ * @swagger
+ * /clientes:
+ *   get:
+ *     summary: Obtiene todos los clientes
+ *     tags: [Clientes]
+ *     responses:
+ *       200:
+ *         description: Lista de clientes obtenida exitosamente
+ */
+
+/**
+ * @swagger
+ * /clientes/{id}:
+ *   get:
+ *     summary: Obtiene un cliente por ID
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Cliente encontrado
+ *       404:
+ *         description: Cliente no encontrado
+ */
+
+/**
+ * @swagger
+ * /clientes:
+ *   post:
+ *     summary: Crea un nuevo cliente
+ *     tags: [Clientes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               apellido:
+ *                 type: string
+ *               telefono:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Cliente creado exitosamente
+ */
+
+/**
+ * @swagger
+ * /clientes/{id}:
+ *   put:
+ *     summary: Actualiza un cliente existente
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               apellido:
+ *                 type: string
+ *               telefono:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Cliente actualizado
+ *       404:
+ *         description: Cliente no encontrado
+ */
+
+/**
+ * @swagger
+ * /clientes/{id}:
+ *   delete:
+ *     summary: Elimina un cliente por ID
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Cliente eliminado exitosamente
+ *       404:
+ *         description: Cliente no encontrado
+ */
+
+
 // Definimos la ruta GET /api/clientes (o /clientes si se monta bajo /api) para obtener todos los clientes.
 // Esta ruta responde a peticiones GET sin parámetros de ID.
 router.get("/", clienteController.getAll);

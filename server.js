@@ -57,6 +57,11 @@ app.get("/api", (req, res) => {
   });
 });
 
+
+// Importamos Swagger para documentar la API
+const swaggerDocs = require("./app/config/swagger");
+
+
 // Montamos las rutas de clientes bajo el prefijo /api/clientes.
 // Esto hace que GET /api/clientes apunte a clienteRoutes.getAll, etc.
 const clienteRoutes = require("./app/routes/clienteRoutes");
@@ -74,6 +79,10 @@ app.use("/api/tarifas", tarifaRoutes);
 const ticketRoutes = require("./app/routes/ticketRoutes");
 app.use("/api/tickets", ticketRoutes);
 
+// Documentación Swagger (disponible en /api/docs)
+swaggerDocs(app);
+
+
 // Middleware global para manejar rutas no encontradas (responde 404).
 app.use((req, res) => {
   // Si llega aquí, la ruta no existe.
@@ -81,6 +90,7 @@ app.use((req, res) => {
     message: "Ruta no encontrada. Verifica la URL."
   });
 });
+
 
 // Configuramos el puerto (usa variable de entorno o 8081 por defecto).
 const PORT = process.env.PORT || 8081;

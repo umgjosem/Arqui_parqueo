@@ -6,6 +6,110 @@ const router = express.Router();
 
 // Cargamos el controller de espacio.
 const espacioController = require("../controllers/espacioController");
+/**
+ * @swagger
+ * tags:
+ *   name: Espacios
+ *   description: Gestión de espacios de estacionamiento
+ */
+
+/**
+ * @swagger
+ * /espacios:
+ *   get:
+ *     summary: Lista todos los espacios de parqueo
+ *     tags: [Espacios]
+ *     responses:
+ *       200:
+ *         description: Lista de espacios obtenida exitosamente
+ */
+
+/**
+ * @swagger
+ * /espacios/{id}:
+ *   get:
+ *     summary: Obtiene un espacio por ID
+ *     tags: [Espacios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Espacio encontrado
+ *       404:
+ *         description: Espacio no encontrado
+ */
+
+/**
+ * @swagger
+ * /espacios:
+ *   post:
+ *     summary: Crea un nuevo espacio
+ *     tags: [Espacios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               numero:
+ *                 type: string
+ *                 example: E1
+ *               estado:
+ *                 type: string
+ *                 example: Libre
+ *     responses:
+ *       201:
+ *         description: Espacio creado correctamente
+ */
+
+/**
+ * @swagger
+ * /espacios/{id}:
+ *   put:
+ *     summary: Actualiza un espacio existente
+ *     tags: [Espacios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               estado:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Espacio actualizado correctamente
+ */
+
+/**
+ * @swagger
+ * /espacios/{id}:
+ *   delete:
+ *     summary: Elimina un espacio
+ *     tags: [Espacios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Espacio eliminado
+ */
+
+
+
 
 // Ruta GET /api/espacios para obtener todos los espacios (e.g., lista de lugares disponibles).
 router.get("/", espacioController.getAll);
