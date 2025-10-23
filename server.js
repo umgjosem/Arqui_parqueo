@@ -17,10 +17,16 @@ const app = express();
 // Configuración de CORS
 // ===============================
 const corsOptions = {
-  origin: process.env.FRONTEND_ORIGIN || "http://localhost:8081", // desde .env o valor por defecto
+  origin:
+    process.env.NODE_ENV === "production"
+      ? process.env.FRONTEND_ORIGIN // origen definido en .env (ej: dominio del frontend)
+      : "*", // en desarrollo permite todo
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
+
 
 // ===============================
 // Middlewares
