@@ -25,20 +25,25 @@ espacioController.getAll = async (req, res) => {
     }
 };
 
-// Método para obtener un espacio por ID (GET /api/espacios/:id).
+// Método para obtener un espacio por ID junto con todos sus tickets
 espacioController.getById = async (req, res) => {
     const id = req.params.id;
     try {
-        // Buscamos por ID con include de tickets actuales (para ver si está ocupado).
+        // Buscamos por ID incluyendo todos los tickets (sin filtrar por estado)
         const espacio = await db.espacio.findByPk(id, {
-            include: [{ model: db.ticket, as: 'tickets', where: { estado: 'Activo' } }]  // Solo tickets activos.
+            include: [{ 
+                model: db.ticket, 
+                as: 'tickets'  // Incluye todos los tickets asociados
+            }]
         });
+
         if (!espacio) {
             return res.status(404).json({
                 message: "Espacio no encontrado"
             });
         }
-        // Respuesta con datos.
+
+        // Respuesta con datos
         res.status(200).json({
             message: "Espacio obtenido exitosamente",
             data: espacio
