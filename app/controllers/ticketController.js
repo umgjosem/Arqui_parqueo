@@ -109,7 +109,7 @@ ticketController.crearEntrada = async (req, res) => {
             }
         }
         // Actualizamos el estado del espacio a 'Ocupado'.
-        await espacio.update({ estado: 'Ocupado' });
+        await espacio.update({ estado: 'Reservado' });
         // Creamos el nuevo ticket con hora_ingreso actual, horas_estadia y monto inicial en 0.
         const nuevoTicket = await db.ticket.create({
             id_cliente,
