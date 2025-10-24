@@ -55,31 +55,29 @@ clienteController.getById = async (req, res) => {
     }
 };
 
-// Método para crear un nuevo cliente (POST /api/clientes).
+// Método para crear un nuevo cliente (POST /api/clientes)
 clienteController.create = async (req, res) => {
-    // Extraemos los datos del body de la petición (e.g., { nit, nombre, placa }).
-    const { nit, nombre, placa } = req.body;
+    // Extraemos el nombre del body de la petición
+    const { nombre } = req.body;
     try {
-        // Verificamos si ya existe un cliente con el mismo NIT (para evitar duplicados).
-        const clienteExistente = await db.cliente.findOne({ where: { nit } });
+        // Verificamos si ya existe un cliente con el mismo nombre
+        const clienteExistente = await db.cliente.findOne({ where: { nombre } });
         if (clienteExistente) {
             return res.status(400).json({
-                message: "Cliente con NIT ya existe"
+                message: "Cliente con ese nombre ya existe"
             });
         }
-        // Creamos el nuevo cliente usando el modelo.
-        const nuevoCliente = await db.cliente.create({
-            nit,
-            nombre,
-            placa
-        });
-        // Enviamos respuesta con status 201 Created y el nuevo cliente.
+
+        // Creamos el nuevo cliente usando el modelo
+        const nuevoCliente = await db.cliente.create({ nombre });
+
+        // Enviamos respuesta con status 201 Created y el nuevo cliente
         res.status(201).json({
             message: "Cliente creado exitosamente",
             data: nuevoCliente
         });
     } catch (error) {
-        // Si hay error (e.g., validación fallida), respondemos con 500.
+        // Si hay error, respondemos con 500
         res.status(500).json({
             message: "Error al crear cliente",
             error: error.message
@@ -87,42 +85,44 @@ clienteController.create = async (req, res) => {
     }
 };
 
-// Método para actualizar un cliente existente (PUT /api/clientes/:id).
+// Método para actualizar un cliente existente (PUT /api/clientes/:id)
 clienteController.update = async (req, res) => {
-    // Extraemos ID de params y datos de body.
     const id = req.params.id;
-    const { nit, nombre, placa } = req.body;
+    const { nombre } = req.body;
+
     try {
-        // Buscamos el cliente por ID.
+        // Buscamos el cliente por ID
         const cliente = await db.cliente.findByPk(id);
-        // Si no existe, enviamos 404.
+
         if (!cliente) {
             return res.status(404).json({
                 message: "Cliente no encontrado"
             });
         }
-        // Verificamos si el nuevo NIT ya existe en otro cliente.
-        const clienteConNIT = await db.cliente.findOne({ where: { nit } });
-        if (clienteConNIT && clienteConNIT.id_cliente !== id) {
+
+        // Verificamos si el nombre ya está en uso por otro cliente
+        const clienteConNombre = await db.cliente.findOne({ where: { nombre } });
+        if (clienteConNombre && clienteConNombre.id_cliente !== parseInt(id)) {
             return res.status(400).json({
-                message: "NIT ya está en uso por otro cliente"
+                message: "Nombre ya está en uso por otro cliente"
             });
         }
-        // Actualizamos los campos del cliente.
-        await cliente.update({ nit, nombre, placa });
-        // Enviamos el cliente actualizado con status 200.
+
+        // Actualizamos el nombre del cliente
+        await cliente.update({ nombre });
+
         res.status(200).json({
             message: "Cliente actualizado exitosamente",
             data: cliente
         });
     } catch (error) {
-        // Manejo de errores.
         res.status(500).json({
             message: "Error al actualizar cliente",
             error: error.message
         });
     }
 };
+
 
 // Método para eliminar un cliente (DELETE /api/clientes/:id). Nota: En producción, considera soft-delete.
 clienteController.delete = async (req, res) => {
