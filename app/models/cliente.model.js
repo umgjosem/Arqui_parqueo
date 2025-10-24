@@ -6,16 +6,8 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
-        nit: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
+
         nombre: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        placa: {
             type: Sequelize.STRING,
             allowNull: false
         }
