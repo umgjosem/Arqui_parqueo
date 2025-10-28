@@ -152,13 +152,13 @@ espacioController.delete = async (req, res) => {
         });
     }
 };
-// Método para obtener solo el estado de un espacio (GET /api/espacios/:id/estado)
+// Método para obtener el estado de un espacio y marcar si tiene ticket activo (GET /api/espacios/:id/estado)
 espacioController.getEstadoById = async (req, res) => {
     const id = req.params.id;
     try {
-        // Buscamos el espacio por ID, pero solo seleccionamos el campo 'estado'
+        // Buscar el espacio por ID, trayendo solo id y estado
         const espacio = await db.espacio.findByPk(id, {
-            attributes: ['estado'] // 👈 solo traer el campo estado
+            attributes: ['id_espacio', 'estado']
         });
 
         if (!espacio) {
@@ -167,11 +167,21 @@ espacioController.getEstadoById = async (req, res) => {
             });
         }
 
-        // Respuesta exitosa solo con el estado
+        // Verificar si hay un ticket activo asociado
+        const ticketActivo = await db.ticket.findOne({
+            where: { id_espacio: id, estado: 'Activo' },
+            attributes: ['id_ticket'] // solo necesitamos saber si existe
+        });
+
+        // Campo adicional: "v" si hay ticket activo, "f" si no
+        const tieneActivo = ticketActivo ? "v" : "f";
+
+        // Respuesta final
         res.status(200).json({
             message: "Estado del espacio obtenido exitosamente",
-            id,
-            estado: espacio.estado
+            id: espacio.id_espacio,
+            estado: espacio.estado,
+            activo: tieneActivo
         });
     } catch (error) {
         res.status(500).json({

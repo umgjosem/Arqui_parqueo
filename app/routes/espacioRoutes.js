@@ -111,7 +111,7 @@ const espacioController = require("../controllers/espacioController");
  * @swagger
  * /espacios/{id}/estado:
  *   get:
- *     summary: Obtener solo el estado de un espacio
+ *     summary: Obtener el estado de un espacio e indicar si tiene ticket activo
  *     tags: [Espacios]
  *     parameters:
  *       - in: path
@@ -137,13 +137,16 @@ const espacioController = require("../controllers/espacioController");
  *                 estado:
  *                   type: string
  *                   example: Libre
+ *                 activo:
+ *                   type: string
+ *                   enum: [v, f]
+ *                   example: v
+ *                   description: Indica si el espacio tiene un ticket activo ("v") o no ("f")
  *       404:
  *         description: Espacio no encontrado
  *       500:
  *         description: Error interno del servidor
  */
-
-
 
 // Ruta GET /api/espacios para obtener todos los espacios (e.g., lista de lugares disponibles).
 router.get("/", espacioController.getAll);
@@ -164,5 +167,6 @@ router.put("/:id", espacioController.update);
 router.delete("/:id", espacioController.delete);
 
 router.get("/:id/estado", espacioController.getEstadoById);
+
 // Exportamos el router.
 module.exports = router;
