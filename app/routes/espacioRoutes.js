@@ -107,7 +107,41 @@ const espacioController = require("../controllers/espacioController");
  *       200:
  *         description: Espacio eliminado
  */
-
+/**
+ * @swagger
+ * /espacios/{id}/estado:
+ *   get:
+ *     summary: Obtener solo el estado de un espacio
+ *     tags: [Espacios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del espacio
+ *     responses:
+ *       200:
+ *         description: Estado del espacio obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Estado del espacio obtenido exitosamente
+ *                 id:
+ *                   type: integer
+ *                   example: 3
+ *                 estado:
+ *                   type: string
+ *                   example: Libre
+ *       404:
+ *         description: Espacio no encontrado
+ *       500:
+ *         description: Error interno del servidor
+ */
 
 
 
@@ -129,5 +163,6 @@ router.put("/:id", espacioController.update);
 // :id del espacio a eliminar.
 router.delete("/:id", espacioController.delete);
 
+router.get("/:id/estado", espacioController.getEstadoById);
 // Exportamos el router.
 module.exports = router;

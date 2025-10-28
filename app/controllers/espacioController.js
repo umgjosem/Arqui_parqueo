@@ -152,6 +152,35 @@ espacioController.delete = async (req, res) => {
         });
     }
 };
+// Método para obtener solo el estado de un espacio (GET /api/espacios/:id/estado)
+espacioController.getEstadoById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        // Buscamos el espacio por ID, pero solo seleccionamos el campo 'estado'
+        const espacio = await db.espacio.findByPk(id, {
+            attributes: ['estado'] // 👈 solo traer el campo estado
+        });
+
+        if (!espacio) {
+            return res.status(404).json({
+                message: "Espacio no encontrado"
+            });
+        }
+
+        // Respuesta exitosa solo con el estado
+        res.status(200).json({
+            message: "Estado del espacio obtenido exitosamente",
+            id,
+            estado: espacio.estado
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al obtener estado del espacio",
+            error: error.message
+        });
+    }
+};
+
 
 // Exportamos el controller.
 module.exports = espacioController;
