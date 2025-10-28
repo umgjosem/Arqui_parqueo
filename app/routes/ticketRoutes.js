@@ -78,6 +78,27 @@ const ticketController = require("../controllers/ticketController");
  *       404:
  *         description: Ticket no encontrado
  */
+/**
+ * @swagger
+ * /tickets/cliente/{id_cliente}:
+ *   get:
+ *     summary: Obtener todos los tickets asociados a un cliente
+ *     tags: [Tickets]
+ *     parameters:
+ *       - in: path
+ *         name: id_cliente
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Lista de tickets del cliente
+ *       404:
+ *         description: Cliente no encontrado o sin tickets
+ *       500:
+ *         description: Error interno del servidor
+ */
 
 
 
@@ -87,6 +108,9 @@ router.get("/", ticketController.getAll);
 
 // Ruta GET /api/tickets/:id para obtener un ticket específico (e.g., detalles de un cobro).
 router.get("/:id", ticketController.getById);
+
+// Ruta GET /api/tickets/cliente/:id_cliente → obtener todos los tickets de un cliente
+router.get("/cliente/:id_cliente", ticketController.getByCliente);
 
 // Ruta POST /api/tickets/entrada para registrar una entrada (flujo principal de parqueo).
 // Datos en req.body: { id_cliente: 1, id_espacio: 1, id_tarifa: 1 (opcional) }.

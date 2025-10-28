@@ -119,6 +119,56 @@ const clienteController = require("../controllers/clienteController");
  *       404:
  *         description: Cliente no encontrado
  */
+/**
+ * @swagger
+ * /clientes/nombre/{nombre}:
+ *   get:
+ *     summary: Busca un cliente por su nombre
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: nombre
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Nombre del cliente a buscar
+ *     responses:
+ *       200:
+ *         description: Cliente encontrado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Cliente encontrado exitosamente
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id_cliente:
+ *                       type: integer
+ *                       example: 1
+ *                     nombre:
+ *                       type: string
+ *                       example: Juan Pérez
+ *                     tickets:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id_ticket:
+ *                             type: integer
+ *                             example: 10
+ *                           estado:
+ *                             type: string
+ *                             example: Activo
+ *       404:
+ *         description: Cliente no encontrado con ese nombre
+ *       500:
+ *         description: Error al buscar cliente por nombre
+ */
+
 
 
 // Definimos la ruta GET /api/clientes (o /clientes si se monta bajo /api) para obtener todos los clientes.
@@ -136,6 +186,8 @@ router.post("/", clienteController.create);
 // Definimos la ruta PUT /api/clientes/:id para actualizar un cliente existente.
 // :id identifica cuál actualizar; datos en req.body.
 router.put("/:id", clienteController.update);
+// Buscar cliente por nombre
+router.get('/nombre/:nombre', clienteController.getByNombre);
 
 // Definimos la ruta DELETE /api/clientes/:id para eliminar un cliente.
 // :id identifica cuál eliminar; responde con confirmación.

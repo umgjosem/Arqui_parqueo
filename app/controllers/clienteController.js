@@ -151,5 +151,38 @@ clienteController.delete = async (req, res) => {
     }
 };
 
+// Método para buscar un cliente por nombre (GET /api/clientes/nombre/:nombre)
+clienteController.getByNombre = async (req, res) => {
+    // Extraemos el nombre del parámetro de la URL
+    const nombre = req.params.nombre;
+
+    try {
+        // Buscamos el cliente cuyo nombre coincida exactamente con el proporcionado
+        const cliente = await db.cliente.findOne({
+            where: { nombre },
+            include: [{ model: db.ticket, as: 'tickets' }] // Incluye tickets asociados si existen
+        });
+
+        // Si no se encuentra ningún cliente, devolvemos un 404
+        if (!cliente) {
+            return res.status(404).json({
+                message: "Cliente no encontrado con ese nombre"
+            });
+        }
+
+        // Si lo encontramos, devolvemos el cliente y un mensaje de éxito
+        res.status(200).json({
+            message: "Cliente encontrado exitosamente",
+            data: cliente
+        });
+    } catch (error) {
+        // Si ocurre un error, devolvemos un 500 con el mensaje de error
+        res.status(500).json({
+            message: "Error al buscar cliente por nombre",
+            error: error.message
+        });
+    }
+};
+
 // Exportamos el objeto controller para usarlo en rutas.
 module.exports = clienteController;

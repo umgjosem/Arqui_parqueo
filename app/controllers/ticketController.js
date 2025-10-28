@@ -32,6 +32,52 @@ ticketController.getAll = async (req, res) => {
         });
     }
 };
+// Método para obtener todos los tickets asociados a un cliente (GET /api/tickets/cliente/:id_cliente)
+ticketController.getByCliente = async (req, res) => {
+    // Extraemos el ID del cliente de la URL (ej: /api/tickets/cliente/5)
+    const id_cliente = req.params.id_cliente;
+
+    try {
+        // Verificamos que el cliente exista
+        const cliente = await db.cliente.findByPk(id_cliente);
+        if (!cliente) {
+            return res.status(404).json({
+                message: "Cliente no encontrado"
+            });
+        }
+
+        // Obtenemos todos los tickets vinculados a este cliente
+        const tickets = await db.ticket.findAll({
+            where: { id_cliente },
+            include: [
+                { model: db.espacio, as: 'espacio' },
+                { model: db.tarifa, as: 'tarifa' }
+            ],
+            order: [['hora_ingreso', 'DESC']] // Ordena por ingreso más reciente primero
+        });
+
+        // Si el cliente no tiene tickets, devolvemos 404
+        if (!tickets || tickets.length === 0) {
+            return res.status(404).json({
+                message: "No se encontraron tickets para este cliente"
+            });
+        }
+
+        // Enviamos respuesta exitosa con la lista de tickets
+        res.status(200).json({
+            message: "Tickets del cliente obtenidos exitosamente",
+            cliente: cliente.nombre,  // opcional: devolvemos también el nombre del cliente
+            data: tickets
+        });
+    } catch (error) {
+        // Capturamos errores y devolvemos 500
+        res.status(500).json({
+            message: "Error al obtener tickets por cliente",
+            error: error.message
+        });
+    }
+};
+
 
 // Método para obtener un ticket por ID (GET /api/tickets/:id).
 ticketController.getById = async (req, res) => {
