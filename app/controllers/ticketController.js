@@ -219,7 +219,6 @@ ticketController.registrarSalida = async (req, res) => {
             hora_salida,
             horas_estadia,
             monto_total,
-            estado: 'Finalizado'
         });
         // Liberamos el espacio actualizando su estado a 'Libre'.
         await ticket.espacio.update({ estado: 'Libre' });
